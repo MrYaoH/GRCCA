@@ -14,8 +14,7 @@ def train(args, model, adj, diff, features, local_memory_embeddings, sparse, dev
     model.train()
     cross_entropy = nn.CrossEntropyLoss(ignore_index=-100)
 
-    # 建立assignments，即构建分类任务
-    # print(local_memory_embeddings.size())
+    # Build clustering assignments
     assignments = cluster_memory(args, model, local_memory_embeddings, features.shape[-2])
 
     aug_adj1 = aug.dropout_adj(adj, p=args.drop_edge)
@@ -40,13 +39,13 @@ def train(args, model, adj, diff, features, local_memory_embeddings, sparse, dev
     aug_features1 = aug_features1.to(device)
     aug_features2 = aug_features2.to(device)
 
-    # 得到embed和prototypes
+    # Get embedding and prototypes
     embed_1, prototypes_1 = model(aug_features1, adj_1, sparse)
     embed_2, prototypes_2 = model(aug_features2, adj_2, sparse)
     embed_2 = embed_2.detach()
     embed_1 = embed_1.detach()
 
-    # 计算loss
+    # Compute loss
     loss = 0
     for h in range(len(args.nmb_prototypes)):
         scores_1 = prototypes_1[h] / args.temperature
@@ -60,7 +59,7 @@ def train(args, model, adj, diff, features, local_memory_embeddings, sparse, dev
     optimizer.zero_grad()
     loss.backward()
 
-    # cancel some gradients
+    # Cancel some gradients
     for name, p in model.named_parameters():
         if "prototypes" in name:
             p.grad = None
@@ -70,7 +69,7 @@ def train(args, model, adj, diff, features, local_memory_embeddings, sparse, dev
     embed_1 = embed_1.unsqueeze(dim=0)
     embed_2 = embed_2.unsqueeze(dim=0)
 
-    # 更新memory_bank
+    # Update memory_bank
     local_memory_embeddings = torch.cat((embed_1, embed_2), dim=0)
 
     return loss, local_memory_embeddings
