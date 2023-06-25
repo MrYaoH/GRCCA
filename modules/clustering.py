@@ -37,7 +37,7 @@ def init_memory(args, model, adj, diff, features, sparse, device):
 
 def cluster_memory(args, model, local_memory_embeddings, size_dataset, nmb_kmeans_iters=10):
     j = 0
-    assignments = -100 * torch.ones(len(args.nmb_prototypes), size_dataset).long() # 存在三个prototypes
+    assignments = -100 * torch.ones(len(args.nmb_prototypes), size_dataset).long() 
 
     with torch.no_grad():
         for i_K, K in enumerate(args.nmb_prototypes):
@@ -53,8 +53,8 @@ def cluster_memory(args, model, local_memory_embeddings, size_dataset, nmb_kmean
             for n_iter in range(nmb_kmeans_iters + 1):
 
                 # E step
-                dot_products = torch.mm(local_memory_embeddings[j], centroids.t())     # 计算每个节点和每个原型之间的距离(相似度)
-                _, local_assignments = dot_products.max(dim=1)     # 决定每个节点属于哪一个类
+                dot_products = torch.mm(local_memory_embeddings[j], centroids.t())    
+                _, local_assignments = dot_products.max(dim=1)    
 
                 # finish
                 if n_iter == nmb_kmeans_iters:
@@ -73,18 +73,13 @@ def cluster_memory(args, model, local_memory_embeddings, size_dataset, nmb_kmean
                         )
                     counts[k] = len(where_helper[k][0])
                 mask = counts > 0
-                centroids[mask] = emb_sums[mask] / counts[mask].unsqueeze(1)  # 如果没有集合在里面则不更新
+                centroids[mask] = emb_sums[mask] / counts[mask].unsqueeze(1) 
 
                 # normalize centroids
                 centroids = nn.functional.normalize(centroids, dim=1, p=2)
 
-            # 让分类头的参数等于k_means的聚类中心
             getattr(model.prototypes, "prototypes" + str(i_K)).weight.copy_(centroids)
-
-            # log assignments
             assignments[i_K] = local_assignments
-
-            # next memory bank to use
             j = (j + 1) % len(args.crops_for_assign)
 
     return assignments
