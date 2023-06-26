@@ -1,6 +1,6 @@
 # GRCCA
 
-The PyTorch implementation of GRCCA, that is, graph representation learning via contrastive clustering assignments
+The PyTorch implementation of GRCCA, that is, Graph Representation learning via Contrastive Clustering Assignments.
 
 ## Dependencies
 
@@ -14,9 +14,9 @@ The PyTorch implementation of GRCCA, that is, graph representation learning via 
 
 ## Dataset
 
-The datasets are stored at https://drive.google.com/drive/folders/1RorWFU32_r2mEb39HzwYiAabnqNasgjm?usp=sharing
+The datasets are stored at https://drive.google.com/drive/folders/1RorWFU32_r2mEb39HzwYiAabnqNasgjm?usp=sharing.
 
-Before running, create a new folder 'data' for the datasets
+Before running, create a new folder 'data' for the datasets.
 
 ## Usage
 
