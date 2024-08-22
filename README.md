@@ -22,10 +22,10 @@ For link prediction, please additionally create a new folder 'process_dataset' a
 
 ## Usage
 
-(1) Node classification
+(1) Node classification: 
 python main_{datasets}.py
 
-(2) Link prediction
+(2) Link prediction: 
 python {}_link.py
 
 
