@@ -1,6 +1,6 @@
 # GRCCA
 
-The PyTorch implementation of GRCCA, that is, [Graph Representation learning via Contrastive Clustering Assignments](https://ieeexplore.ieee.org/document/10243574).
+The PyTorch implementation of ''[Graph Representation learning via Contrastive Clustering Assignments](https://ieeexplore.ieee.org/document/10243574)''.
 
 ## Dependencies
 
